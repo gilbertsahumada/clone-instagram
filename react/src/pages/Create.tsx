@@ -44,28 +44,12 @@ const Create: React.FC = () => {
         </CardHeader>
         <CardContent className="grid gap-4">
           <Button
-            variant={selectedOption === "images" ? "default" : "outline"}
-            className="flex items-center justify-start h-16 text-lg"
-            onClick={() => handleOptionClick("images")}
-          >
-            <Image className="w-6 h-6 mr-2" />
-            Post con múltiples imágenes
-          </Button>
-          <Button
-            variant={selectedOption === "video" ? "default" : "outline"}
-            className="flex items-center justify-start h-16 text-lg"
-            onClick={() => handleOptionClick("video")}
-          >
-            <Film className="w-6 h-6 mr-2" />
-            Post con video
-          </Button>
-          <Button
             variant={selectedOption === "single-image" ? "default" : "outline"}
             className="flex items-center justify-start h-16 text-lg"
             onClick={() => handleOptionClick("single-image")}
           >
             <ImagePlus className="w-6 h-6 mr-2" />
-            Post con una sola imagen
+            Crear Post Instagram
           </Button>
         </CardContent>
         <CardFooter>

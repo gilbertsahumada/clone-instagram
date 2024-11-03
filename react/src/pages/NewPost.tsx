@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { z } from "zod";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { AlertCircle, CircleCheck } from "lucide-react";
 import { uploadFile, uploadMetadataToPinata } from "@/utils/pinata";
+// Transacciones blockchain
+import { useWriteContract } from "wagmi";
 
 const postSchema = z.object({
   files: z.array(z.instanceof(File)).nonempty("At least one file is required"),
@@ -26,6 +28,12 @@ export default function NewPost() {
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
 
+  const {
+    writeContractAsync: sendTx,
+    isSuccess,
+    isPending,
+    isError,
+  } = useWriteContract();
 
   // Maneja el cambio en los archivos
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,8 +69,326 @@ export default function NewPost() {
     } else {
       setErrors([]);
       const pinImage = await uploadFile(files[0]);
-      const pinMetadata = await uploadMetadataToPinata("Post Instagram", description, pinImage || '')
+      const pinMetadata = await uploadMetadataToPinata(
+        "Post Instagram",
+        description,
+        pinImage || ""
+      );
       console.log(pinMetadata);
+
+      const post = {
+        description: description,
+        uri: pinMetadata,
+      };
+
+      const tx = await sendTx({
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "postId",
+                type: "uint256",
+              },
+            ],
+            name: "PostDoesNotExist",
+            type: "error",
+          },
+          {
+            anonymous: false,
+            inputs: [
+              {
+                indexed: true,
+                internalType: "uint256",
+                name: "postId",
+                type: "uint256",
+              },
+              {
+                indexed: false,
+                internalType: "address",
+                name: "user",
+                type: "address",
+              },
+            ],
+            name: "Like",
+            type: "event",
+          },
+          {
+            anonymous: false,
+            inputs: [
+              {
+                indexed: true,
+                internalType: "uint256",
+                name: "postId",
+                type: "uint256",
+              },
+              {
+                indexed: false,
+                internalType: "string",
+                name: "description",
+                type: "string",
+              },
+              {
+                indexed: false,
+                internalType: "address",
+                name: "owner",
+                type: "address",
+              },
+            ],
+            name: "PostAdded",
+            type: "event",
+          },
+          {
+            anonymous: false,
+            inputs: [
+              {
+                indexed: true,
+                internalType: "uint256",
+                name: "postId",
+                type: "uint256",
+              },
+              {
+                indexed: false,
+                internalType: "address",
+                name: "user",
+                type: "address",
+              },
+            ],
+            name: "Unlike",
+            type: "event",
+          },
+          {
+            inputs: [
+              {
+                components: [
+                  {
+                    internalType: "string",
+                    name: "description",
+                    type: "string",
+                  },
+                  {
+                    internalType: "string",
+                    name: "uri",
+                    type: "string",
+                  },
+                ],
+                internalType: "struct Instagram.Post",
+                name: "_post",
+                type: "tuple",
+              },
+            ],
+            name: "addPost",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_start",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_end",
+                type: "uint256",
+              },
+            ],
+            name: "getAllPosts",
+            outputs: [
+              {
+                components: [
+                  {
+                    internalType: "string",
+                    name: "description",
+                    type: "string",
+                  },
+                  {
+                    internalType: "string",
+                    name: "uri",
+                    type: "string",
+                  },
+                ],
+                internalType: "struct Instagram.Post[]",
+                name: "",
+                type: "tuple[]",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "getLikesOfPost",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "getPost",
+            outputs: [
+              {
+                components: [
+                  {
+                    internalType: "string",
+                    name: "description",
+                    type: "string",
+                  },
+                  {
+                    internalType: "string",
+                    name: "uri",
+                    type: "string",
+                  },
+                ],
+                internalType: "struct Instagram.Post",
+                name: "",
+                type: "tuple",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "_user",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "getPostUser",
+            outputs: [
+              {
+                components: [
+                  {
+                    internalType: "string",
+                    name: "description",
+                    type: "string",
+                  },
+                  {
+                    internalType: "string",
+                    name: "uri",
+                    type: "string",
+                  },
+                ],
+                internalType: "struct Instagram.Post",
+                name: "",
+                type: "tuple",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "_user",
+                type: "address",
+              },
+            ],
+            name: "getPostsCounterByUser",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "getUri",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "like",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "s_postCounterId",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "_postId",
+                type: "uint256",
+              },
+            ],
+            name: "unlike",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ],
+        address: "0x3Ae581DFFbfD4bF5976b593BB7F7FD897F2Ee80A",
+        functionName: "addPost",
+        args: [{ description: post.description, uri: post.uri! }],
+      });
+
+      console.log("tx hash : ", tx);
+      //Agregando transaccion a la blockchain
     }
   };
 
