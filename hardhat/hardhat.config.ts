@@ -13,11 +13,26 @@ const config: HardhatUserConfig = {
   solidity: "0.8.24",
   defaultNetwork: "hardhat",
   networks: {
-    avaxFuji: {
-      url: `https://api.avax.network/ext/bc/C/rpc`,
+    avalancheFuji: {
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
       accounts: [`0x${AVAX_PRIVATE_KEY}`],
     },
   },
+  etherscan: {
+    apiKey: {
+      avalancheFuji: `${process.env.ETHERSCAN_API_KEY}` || ""
+    },
+    customChains: [
+      {
+        network: "avalancheFuji",
+        chainId: 43113,
+        urls: {
+          apiURL: "https://api.avascan.info/v2/network/testnet/evm/43113/etherscan",
+          browserURL: "https://cchain.explorer.avax-test.network"
+        }
+      }
+    ]
+  }
 };
 
 export default config;
