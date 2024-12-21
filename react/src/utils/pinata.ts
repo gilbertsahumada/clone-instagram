@@ -7,7 +7,6 @@ if (!PINATA_JTW || !GATEWAY_IPFS) {
     throw new Error("PINATA_JWT or GATEWAY_IPFS not set")
 }
 
-
 const pinata = new PinataSDK({
     pinataJwt: PINATA_JTW
 })

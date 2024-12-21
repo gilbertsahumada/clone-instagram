@@ -38,7 +38,7 @@ contract Instagram {
     /// @param postId El identificador del post
     /// @param description La descripción del post
     /// @param owner La dirección del propietario del post
-    event PostAdded(uint256 indexed postId, string description, address owner);
+    event PostAdded(uint256 indexed postId, string indexed uri, string indexed description, address owner);
 
     /// @notice Evento emitido cuando un usuario da like a un post
     /// @param postId El identificador del post
@@ -62,7 +62,7 @@ contract Instagram {
         s_posts[s_postCounterId] = _post;
         s_postsUser[msg.sender][s_postCounterId] = _post;
         s_postsCounterByUser[msg.sender]++;
-        emit PostAdded(s_postCounterId, _post.description, msg.sender);
+        emit PostAdded(s_postCounterId, _post.uri, _post.description, msg.sender);
     }
 
     /// @notice Da like a un post

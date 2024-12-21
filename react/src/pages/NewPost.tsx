@@ -382,7 +382,7 @@ export default function NewPost() {
             type: "function",
           },
         ],
-        address: "0x3Ae581DFFbfD4bF5976b593BB7F7FD897F2Ee80A",
+        address: "0xD51460104000b19d855ef873c03897ea1E17c407",
         functionName: "addPost",
         args: [{ description: post.description, uri: post.uri! }],
       });
