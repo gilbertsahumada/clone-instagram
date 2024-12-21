@@ -23,7 +23,7 @@ const url =
   "https://api.studio.thegraph.com/query/91138/posts-instagram/version/latest";
 
 export default function App() {
-  const { data, status } = useQuery({
+  const { data, status } = useQuery<any>({
     queryKey: ["data"],
     async queryFn() {
       return await request(url, query);
@@ -37,12 +37,13 @@ export default function App() {
         <div>Error ocurred querying the Subgraph</div>
       ) : null}
       <div>
-        {data &&
+        {data ? (
           data.postAddeds.map((post: any, key: number) => {
-            return (
-              <CardPost post={post} key={key} />
-            );
-          })}
+            return <CardPost post={post} key={key} />
+          })
+        ) : (
+          <div>No posts found</div>
+        )}
       </div>
     </div>
   );

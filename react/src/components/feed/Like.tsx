@@ -329,6 +329,8 @@ export default function Like({ postId }: { postId: number }) {
       functionName: "like",
       args: [BigInt(idPost)],
     });
+
+    console.log(tx);
   };
 
   return (
