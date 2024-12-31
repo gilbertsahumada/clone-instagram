@@ -18,15 +18,15 @@
 
 **Parte 8 - Despliegue de Contratos y Configuración adicional -** [Youtube 8 ](https://youtu.be/Fl8DRu9IgGw)
 
-**Parte 9 - Agregando Rutas al Front-end -** [Youtube 9 ](https://youtu.be/EBd7JYbS35g)
+**Parte 9 - Creando Rutas -** [Youtube 9 ](https://youtu.be/EBd7JYbS35g)
 
-**Parte 10 - Agregando Rutas al Front-end -** [Youtube 10 ](https://youtu.be/DnuGtF4xziw)
+**Parte 10 - Diseño - TailwindCSS - shadcn - v0 -** [Youtube 10 ](https://youtu.be/DnuGtF4xziw)
 
-**Parte 11 - Agregando Rutas al Front-end -** [Youtube 11 ](https://youtu.be/hhkES1fx_7A)
+**Parte 11 - Pinata SDK - Subiendo Metadata -** [Youtube 11 ](https://youtu.be/hhkES1fx_7A)
 
-**Parte 12 - Agregando Rutas al Front-end -** [Youtube 12 ](https://youtu.be/AZ6QMOIgsTU)
+**Parte 12 - Integrando Wallet Wallet - RainbowKit / Viem  -** [Youtube 12 ](https://youtu.be/AZ6QMOIgsTU)
 
-**Parte 12 - Agregando Rutas al Front-end -** [Youtube 13 ](https://youtu.be/BmA_gskJULU)
+**Parte 12 - Integrando The Graph -** [Youtube 13 ](https://youtu.be/BmA_gskJULU)
 
 
 [![Captura de pantalla del proyecto](https://github.com/user-attachments/assets/4534758f-3458-4f01-92b8-2bebe4976e63)](https://github.com/user-attachments/assets/4534758f-3458-4f01-92b8-2bebe4976e63)
